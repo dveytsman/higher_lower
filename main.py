@@ -1,20 +1,11 @@
 from art import vs, logo
 from game_data import data
 from random import choice
-# Preliminary Game Design
-# 1. print logo
-# 2. if this is the first turn generate 2 dicts from the data
-# 3. print first dict
-# 4. print the vs art
-# 5. print the second dict
-# 6. compare and have the higher ready
-# 7. ask user for input, if it doesn't match, game over
-# 8. if it matches round count increases
-# 9. prints winner of last round 
-# 10. Prints vs
-# 11. prints new dict
-# grab winner 
-# 13. ask user for input (this loops step 5 -> 11)
+
+class InvalidChoiceException(Exception):
+    '''Raised when the user inputs anything other than a or b'''
+
+
 print(logo)
 testdata = data
 guesses = 0
@@ -77,8 +68,15 @@ while play:
     print(vs)
 
     print(second)
-    
-    guess = input("Who has more followers? A or B: ").upper()
+
+    while True:
+        try:
+            guess = input("Who has more followers? A or B: ").upper()
+            if guess not in ['A', 'B']:
+                raise InvalidChoiceException
+            break
+        except InvalidChoiceException:
+            print(f"{guess} is an invalid entry please enter either A or B")
     if guess == "A" and winner['name'] == choice_a['name']:
         guesses += 1
     elif guess == "B" and winner['name'] == choice_b['name']:
